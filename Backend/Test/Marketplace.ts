@@ -67,10 +67,9 @@ describe("NFTMarketplace", () => {
   //   let price = 1;
   //   let tokenID = 1;
   //   let result;
-  //   let marketplaceAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
   //   beforeEach(async () => {
   //     await dtc.connect(addr1).mintNewToken(addr1, tokenURI);
-  //     await dtc.connect(addr1).setApprovalForAll(marketplaceAddress, true);
+  //     await dtc.connect(addr1).setApprovalForAll(marketplace.address, true);
   //   });
 
   //   it("Should track newly created item, transfer NFT from seller to marketplace and emit Offered event", async () => {
