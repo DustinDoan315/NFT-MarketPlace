@@ -63,23 +63,23 @@ describe("NFTMarketplace", () => {
     });
   });
 
-  // describe("Making marketplace items", () => {
-  //   let price = 1;
-  //   let tokenID = 1;
-  //   let result;
-  //   beforeEach(async () => {
-  //     await dtc.connect(addr1).mintNewToken(addr1, tokenURI);
-  //     await dtc.connect(addr1).setApprovalForAll(marketplace.address, true);
-  //   });
+  describe("Making marketplace items", () => {
+    let price = 1;
+    let tokenID = 1;
+    let result;
+    beforeEach(async () => {
+      await dtc.connect(addr1).mintNewToken(addr1, tokenURI);
+      await dtc.connect(addr1).setApprovalForAll(marketplace.target, true);
+    });
 
-  //   it("Should track newly created item, transfer NFT from seller to marketplace and emit Offered event", async () => {
-  //     await expect(
-  //       marketplace
-  //         .connect(addr1)
-  //         .makeNewItem(dtc.address, tokenID, toWei(price))
-  //     )
-  //       .to.emit(marketplace, "Offered")
-  //       .withArgs(1, dtc.address, 1, toWei(price), addr1.address);
-  //   });
-  // });
+    it("Should track newly created item, transfer NFT from seller to marketplace and emit Offered event", async () => {
+      await expect(
+        marketplace
+          .connect(addr1)
+          .makeNewItem(dtc.target, tokenID, toWei(price))
+      )
+        .to.emit(marketplace, "Offered")
+        .withArgs(1, dtc.target, 1, toWei(price), addr1.address);
+    });
+  });
 });

@@ -29,7 +29,7 @@ function saveFrontendFiles(contract: any, name: string) {
 
   fs.writeFileSync(
     contractsDir + `/${name}-address.json`,
-    JSON.stringify({ address: contract.address }, undefined, 2)
+    JSON.stringify({ address: contract.target }, undefined, 2)
   );
 
   const contractArtifact = artifacts.readArtifactSync(name);
