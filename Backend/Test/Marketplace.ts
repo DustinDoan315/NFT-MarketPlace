@@ -2,7 +2,6 @@ import { ethers } from "hardhat";
 import { expect } from "chai";
 import { describe } from "mocha";
 import { DTC, DTC__factory } from "../typechain-types";
-import { Marketplace } from "../typechain-types/Contracts/Marketplace";
 
 const toWei = (num: number) => ethers.parseEther(num.toString());
 const fromWei = (num: number) => ethers.formatEther(num);
@@ -80,6 +79,83 @@ describe("NFTMarketplace", () => {
       )
         .to.emit(marketplace, "Offered")
         .withArgs(1, dtc.target, 1, toWei(price), addr1.address);
+
+      // Owner of NFT should now be the marketplace
+      expect(await dtc.ownerOf(1)).to.equal(marketplace.target);
+      // Item count should now equal 1
+      expect(await marketplace.itemCount()).to.equal(1);
+      // Get item from items mapping then check fields to ensure they are correct
+      const item = await marketplace.items(1);
+      expect(item.itemId).to.equal(1);
+      expect(item.nft).to.equal(dtc.target);
+      expect(item.tokenId).to.equal(1);
+      expect(item.price).to.equal(toWei(price));
+      expect(item.sold).to.equal(false);
+    });
+
+    it("Should fail if price is set to zero", async function () {
+      await expect(
+        marketplace.connect(addr1).makeNewItem(dtc.target, 1, 0)
+      ).to.be.revertedWith("Price must be greater than zero");
+    });
+  });
+
+  describe("Purchasing marketplace items", () => {
+    let price = 2;
+    let fee = (feePercent / 100) * price;
+    let totalPriceInWei;
+    const epsilon = 0.000000000001; // Define a very small difference threshold
+
+    beforeEach(async () => {
+      await dtc.connect(addr1).mintNewToken(addr1, tokenURI);
+      await dtc.connect(addr1).setApprovalForAll(marketplace.target, true);
+
+      await marketplace.connect(addr1).makeNewItem(dtc.target, 1, toWei(price));
+    });
+
+    it("Should update item as sold, pay seller, transfer NFT to buyer, charge fees and emit a Bought event", async () => {
+      const sellerInitialEthBal: any = await ethers.provider.getBalance(
+        addr1.address
+      );
+      const feeAccountInitialEthBal: any = await ethers.provider.getBalance(
+        deployer.address
+      );
+
+      totalPriceInWei = await marketplace.getTotalPrice(1);
+      // addr 2 purchases item.
+      await expect(
+        marketplace.connect(addr2).purchaseItem(1, { value: totalPriceInWei })
+      )
+        .to.emit(marketplace, "Bought")
+        .withArgs(1, dtc.target, 1, toWei(price), addr1.address, addr2.address);
+
+      const sellerFinalEthBal: any = await ethers.provider.getBalance(
+        addr1.address
+      );
+      const feeAccountFinalEthBal: any = await ethers.provider.getBalance(
+        deployer.address
+      );
+      // Item should be marked as sold
+      expect((await marketplace.items(1)).sold).to.equal(true);
+      // Seller should receive payment for the price of the NFT sold.
+      expect(+fromWei(sellerFinalEthBal)).to.equal(
+        +price + +fromWei(sellerInitialEthBal)
+      );
+      // feeAccount should receive fee
+      expect((+fromWei(feeAccountFinalEthBal)).toFixed(1)).to.equal(
+        (+fee + +fromWei(feeAccountInitialEthBal)).toFixed(1)
+      );
+
+      // The buyer should now own the nft
+      expect(await dtc.ownerOf(1)).to.equal(addr2.address);
+    });
+
+    it("Should fail if price is not enough tp buy Item", async () => {
+      await expect(
+        marketplace.connect(addr2).purchaseItem(1, { value: 0 })
+      ).to.be.revertedWith(
+        "Not enough ether to cover item price and market fee"
+      );
     });
   });
 });

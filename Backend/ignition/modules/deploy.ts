@@ -21,7 +21,8 @@ async function main() {
 
 function saveFrontendFiles(contract: any, name: string) {
   const fs = require("fs");
-  const contractsDir = __dirname + "/../../../Frontend/ContractsData";
+  const contractsDir =
+    __dirname + "/../../../Frontend/Web/nft-marketplace/ContractsData";
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
