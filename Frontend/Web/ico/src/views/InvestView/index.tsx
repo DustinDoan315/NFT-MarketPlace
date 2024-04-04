@@ -48,14 +48,14 @@ export default function InvestView() {
           </Link>
         ))}
 
-        {!wallet ? (
+        {/* {!wallet ? (
           <WalletConnect onClick={connectWallet} />
         ) : (
           <WalletInfo
             address={wallet?.address || ""}
             amount={wallet?.bnb || 0}
           />
-        )}
+        )} */}
       </Flex>
     </Flex>
   );
