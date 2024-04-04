@@ -8,10 +8,14 @@ import { WalletConnect, WalletInfo } from "@/components";
 import { ethers } from "ethers";
 import { menus } from "@/constants";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setWalletInfo } from "@/redux/reducers/accounts/account.slice";
 
 export default function InvestView() {
-  const [wallet, setWallet] = useState<any>();
-  const [web3Provider, setWeb3Provider] = useState<ethers.BrowserProvider>();
+  // const [wallet, setWallet] = useState<any>();
+  // const [web3Provider, setWeb3Provider] = useState<ethers.BrowserProvider>();
+  const dispatch = useAppDispatch();
+  const { wallet, web3Provider } = useAppSelector((state) => state.account);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -20,10 +24,13 @@ export default function InvestView() {
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
-      setWallet({
-        address,
-        bnb: Number.parseFloat(ethers.formatEther(balance)),
-      });
+
+      dispatch(
+        setWalletInfo({
+          address,
+          bnb: Number.parseFloat(ethers.formatEther(balance)),
+        })
+      );
     }
   };
 
@@ -48,14 +55,14 @@ export default function InvestView() {
           </Link>
         ))}
 
-        {/* {!wallet ? (
+        {!wallet ? (
           <WalletConnect onClick={connectWallet} />
         ) : (
           <WalletInfo
             address={wallet?.address || ""}
             amount={wallet?.bnb || 0}
           />
-        )} */}
+        )}
       </Flex>
     </Flex>
   );
