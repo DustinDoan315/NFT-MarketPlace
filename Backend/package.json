@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run ignition/modules/deploy.ts --network",
+    "test": "hardhat test",
+    "verify": "hardhat verify --network"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
@@ -17,6 +23,7 @@
     "@types/mocha": ">=9.1.0",
     "@types/node": "^20.12.4",
     "chai": "^4.2.0",
+    "dotenv": "^16.4.5",
     "ethers": "^6.11.1",
     "hardhat": "^2.22.2",
     "hardhat-gas-reporter": "^1.0.8",
