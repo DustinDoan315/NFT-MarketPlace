@@ -35,5 +35,15 @@ describe("---DTC---", () => {
       await dtc.connect(addr1).mint(addr1.address, 1);
       expect(await dtc.balanceOf(await addr1.address)).to.equal(1);
     });
+
+    it("Should not mint by account not match role", async () => {
+      await dtc
+        .connect(deployer)
+        .grantRole(await dtc.MINTER_ROLE(), await addr1.address);
+
+      await expect(
+        dtc.connect(addr2).mint(addr2.address, 1)
+      ).to.be.revertedWith("Caller is not a minter");
+    });
   });
 });
