@@ -12,8 +12,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setWalletInfo } from "@/redux/reducers/accounts/account.slice";
 
 export default function InvestView() {
-  // const [wallet, setWallet] = useState<any>();
-  // const [web3Provider, setWeb3Provider] = useState<ethers.BrowserProvider>();
   const dispatch = useAppDispatch();
   const { wallet, web3Provider } = useAppSelector((state) => state.account);
 
@@ -43,7 +41,7 @@ export default function InvestView() {
         flexDirection={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}>
-        <Heading as="h4" size="xl" noOfLines={1}>
+        <Heading color={"black"} as="h4" size="xl" noOfLines={1}>
           Blockchain Trainee
         </Heading>
         <Spacer />
