@@ -17,9 +17,13 @@ const config: HardhatUserConfig = {
       url: "https://data-seed-prebsc-2-s2.binance.org:8545",
       accounts: [process.env.PRIV_KEY || ""],
     },
+    sepolia: {
+      url: "https://sepolia.infura.io/v3/2b3b923ad44a4738ba5aa8e2bb5f7463",
+      accounts: [process.env.PRIV_KEY || ""],
+    },
   },
   etherscan: {
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.API_KEY_SEPOLIA,
   },
   sourcify: {
     enabled: true,
