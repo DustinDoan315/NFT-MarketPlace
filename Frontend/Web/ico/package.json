@@ -12,6 +12,8 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@ethersproject/abstract-provider": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "@reduxjs/toolkit": "^2.2.3",
     "ethers": "^6.11.1",
     "framer-motion": "^11.0.24",
@@ -19,13 +21,15 @@
     "react": "^18",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18",
-    "react-redux": "^9.1.0"
+    "react-redux": "^9.1.0",
+    "web3": "^4.7.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "typescript": "^5"

@@ -2,7 +2,7 @@
 
 declare var window: any;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { WalletConnect, WalletInfo } from "@/components";
 import { ethers } from "ethers";
@@ -10,10 +10,20 @@ import { menus } from "@/constants";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setWalletInfo } from "@/redux/reducers/accounts/account.slice";
-
+import ListNFT from "./components/ListNFT";
+import MarketContract from "../../../contracts/MarketContract";
 export default function InvestView() {
   const dispatch = useAppDispatch();
-  const { wallet, web3Provider } = useAppSelector((state) => state.account);
+
+  const { wallet } = useAppSelector((state) => state.account);
+  const [feePercent, setFeePercent] = useState<number>(0);
+  const marketContract = new MarketContract();
+  useEffect(() => {
+    const getFeePercent = async () => {
+      const data = await marketContract.getPriceItem(1);
+    };
+    getFeePercent();
+  }, []);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -62,6 +72,8 @@ export default function InvestView() {
           />
         )}
       </Flex>
+
+      <ListNFT />
     </Flex>
   );
 }
