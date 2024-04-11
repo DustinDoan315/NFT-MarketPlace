@@ -4,7 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {useSelector} from 'react-redux';
 import {bottom} from '../screens/bottom';
 
 const Tab = createBottomTabNavigator();
@@ -17,34 +16,25 @@ type TabRoute = {
 
 const TabButton: React.FC<
   | {
-      item: TabRoute;
+      name: string;
       onPress: () => void;
       accessibilityState: any;
     }
   | any
-> = ({item, onPress, accessibilityState}) => {
+> = ({name, onPress, accessibilityState}) => {
   const focused = accessibilityState?.selected;
-  const customerStyle = useSelector((state: any) => state.user?.customerStyle);
   return (
     <Pressable
       testID={'bottomBarContainer'}
       onPress={onPress}
       style={styles.container}>
-      <View style={styles.container}>
-        <Image
-          resizeMode="stretch"
-          source={
-            focused
-              ? customerStyle
-                ? item?.iconActiveNT
-                : item?.iconActiveTR
-              : item?.iconInActive
-          }
-        />
-      </View>
-
-      <View testID={`bottomBar_${item?.title}`}>
-        <Text>123</Text>
+      <View>
+        <Text
+          style={{
+            color: focused ? 'red' : 'black',
+          }}>
+          {name}
+        </Text>
       </View>
     </Pressable>
   );
@@ -64,7 +54,6 @@ const BottomContainer = () => {
           bottom: 0,
           right: 0,
           left: 0,
-          paddingVertical: 10,
         },
       }}>
       <Tab.Screen
@@ -72,6 +61,21 @@ const BottomContainer = () => {
         component={bottom[router.HOME_SCREEN]}
         options={{
           tabBarShowLabel: false,
+          tabBarButton: props => (
+            <TabButton {...props} name={router.HOME_SCREEN} />
+          ),
+          headerLeft: NullComponent,
+        }}
+      />
+
+      <Tab.Screen
+        name={router.PROFILE_SCREEN}
+        component={bottom[router.PROFILE_SCREEN]}
+        options={{
+          tabBarShowLabel: false,
+          tabBarButton: props => (
+            <TabButton {...props} name={router.PROFILE_SCREEN} />
+          ),
           headerLeft: NullComponent,
         }}
       />
@@ -84,8 +88,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 5,
-    marginTop: 15,
   },
 });
 

@@ -35,6 +35,12 @@ export const bottomRoot: RootContainer = {
   },
 };
 
+export const commonRoot: RootContainer = {
+  navigate: (screenName, screenParams?: object) => {
+    rootNavigate(router.COMMON_CONTAINER, screenName, screenParams);
+  },
+};
+
 export function reset(index: number, name: string): void {
   navigationRef.current?.reset({
     index,

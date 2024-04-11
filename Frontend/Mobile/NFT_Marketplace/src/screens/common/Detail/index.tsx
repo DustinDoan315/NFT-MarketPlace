@@ -1,30 +1,29 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {commonRoot} from '../../../navigation/NavigationRef';
-import router from '../../../navigation/router';
+import {root} from '../../../navigation/NavigationRef';
 
-const HomeScreen = () => {
+const DetailScreen = () => {
   const handleNavigate = () => {
-    commonRoot.navigate(router.DETAIL_SCREEN);
+    root.goBack();
   };
-
   return (
     <View style={styles.container}>
-      <Text>HomeScreen</Text>
+      <Text>DetailScreen</Text>
+
       <Pressable onPress={handleNavigate}>
-        <Text>Go to Detail screen</Text>
+        <Text>Go Back</Text>
       </Pressable>
     </View>
   );
 };
 
-export default HomeScreen;
+export default DetailScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: 'crimson',
   },
 });
