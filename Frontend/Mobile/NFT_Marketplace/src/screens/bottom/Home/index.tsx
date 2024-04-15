@@ -2,6 +2,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {commonRoot} from '../../../navigation/NavigationRef';
 import router from '../../../navigation/router';
+import HomeViewModal from './HomeViewModal';
 
 const HomeScreen = () => {
   const handleNavigate = () => {
@@ -10,10 +11,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>HomeScreen</Text>
-      <Pressable onPress={handleNavigate}>
-        <Text>Go to Detail screen</Text>
-      </Pressable>
+      <HomeViewModal />
     </View>
   );
 };
