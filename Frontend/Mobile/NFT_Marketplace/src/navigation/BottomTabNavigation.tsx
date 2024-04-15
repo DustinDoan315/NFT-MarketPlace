@@ -3,9 +3,9 @@ import router from './router';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {bottom} from '../screens/bottom';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Tab = createBottomTabNavigator();
 
 type TabRoute = {
@@ -28,14 +28,17 @@ const TabButton: React.FC<
       testID={'bottomBarContainer'}
       onPress={onPress}
       style={styles.container}>
-      <View>
-        <Text
-          style={{
-            color: focused ? 'red' : 'black',
-          }}>
-          {name}
-        </Text>
-      </View>
+      <Icon
+        name={name === 'Home' ? 'home-analytics' : 'account-details'}
+        color={focused ? 'crimson' : 'black'}
+        size={30}
+      />
+      <Text
+        style={{
+          color: focused ? 'red' : 'black',
+        }}>
+        {name}
+      </Text>
     </Pressable>
   );
 };
@@ -61,9 +64,7 @@ const BottomContainer = () => {
         component={bottom[router.HOME_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: props => (
-            <TabButton {...props} name={router.HOME_SCREEN} />
-          ),
+          tabBarButton: props => <TabButton {...props} name={'Home'} />,
           headerLeft: NullComponent,
         }}
       />
@@ -73,9 +74,7 @@ const BottomContainer = () => {
         component={bottom[router.PROFILE_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: props => (
-            <TabButton {...props} name={router.PROFILE_SCREEN} />
-          ),
+          tabBarButton: props => <TabButton {...props} name={'Profile'} />,
           headerLeft: NullComponent,
         }}
       />
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
 });
 
