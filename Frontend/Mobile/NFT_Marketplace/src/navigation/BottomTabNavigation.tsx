@@ -1,11 +1,11 @@
-import router from './router';
-
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import {bottom} from '../screens/bottom';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import router from './router';
+import {bottom} from '@screens/bottom';
 const Tab = createBottomTabNavigator();
 
 type TabRoute = {

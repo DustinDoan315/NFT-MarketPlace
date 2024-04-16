@@ -1,7 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {commonRoot} from '../../../navigation/NavigationRef';
-import router from '../../../navigation/router';
+
 import '@walletconnect/react-native-compat';
 import {WagmiConfig} from 'wagmi';
 import {mainnet, polygon, arbitrum} from 'viem/chains';
@@ -11,6 +10,8 @@ import {
   W3mButton,
   Web3Modal,
 } from '@web3modal/wagmi-react-native';
+import {commonRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
 // 1. Get projectId at https://cloud.walletconnect.com
 const projectId = 'a21f4935aa965b70bd440d5ea8be7fae';

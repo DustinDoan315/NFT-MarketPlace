@@ -1,4 +1,4 @@
-import router from '../../navigation/router';
+import router from '@navigation/router';
 import HomeScreen from './Home';
 import ProfileScreen from './Profile';
 

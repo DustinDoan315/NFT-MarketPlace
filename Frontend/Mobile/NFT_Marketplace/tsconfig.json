@@ -21,7 +21,8 @@
       "@hooks/*": ["hooks/*"],
       "@router/*": ["navigator/router/*"],
       "@responsive/*": ["utils/responsive/*"],
-      "@i18n/*": ["i18n/*"]
+      "@i18n/*": ["i18n/*"],
+      "@contractData/*": ["ContractData/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

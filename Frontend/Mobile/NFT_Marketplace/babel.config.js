@@ -19,6 +19,7 @@ module.exports = {
           '@utils': './src/utils',
           '@router': './src/navigator/router',
           '@responsive': './src/utils/responsive',
+          '@contractData': './src/ContractData',
         },
       },
     ],
