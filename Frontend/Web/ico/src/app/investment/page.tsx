@@ -1,12 +1,9 @@
 "use client";
 
-declare var window: any;
-
 import React, { useEffect } from "react";
-import { HeaderComponent, WalletConnect, WalletInfo } from "@/components";
 import MarketContract from "../../../contracts/MarketContract";
 
-export default function InvestView() {
+export default function InvestmentLayout() {
   const marketContract = new MarketContract();
   useEffect(() => {
     const getFeePercent = async () => {
@@ -15,5 +12,5 @@ export default function InvestView() {
     getFeePercent();
   }, []);
 
-  return <div>{/* <HeaderComponent /> */}</div>;
+  return <div>{1231}</div>;
 }

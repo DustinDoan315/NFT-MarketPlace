@@ -2,7 +2,7 @@
 "use client";
 
 import { numberFormat, showSortAddress } from "@/utils";
-import { Button, ButtonProps, HStack, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Image } from "antd";
 import React from "react";
 
 interface IProps {
@@ -12,12 +12,10 @@ interface IProps {
 
 export default function WalletInfo({ address, amount }: IProps) {
   return (
-    <Button colorScheme="blue">
-      <HStack>
-        <Text>{showSortAddress(address)}</Text>
-        <Image src={"/bnb.png"} w={"25px"} ml={"20px"} alt="bnb" />
-        <Text>{numberFormat(amount)}</Text>
-      </HStack>
-    </Button>
+    <Flex justify="center" align="center" gap="small">
+      <span style={{ color: "white" }}>{showSortAddress(address)}</span>
+      <Image src={"/bnb.png"} width={25} />
+      <span style={{ color: "white" }}>{numberFormat(amount)}</span>
+    </Flex>
   );
 }

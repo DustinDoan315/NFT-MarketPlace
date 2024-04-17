@@ -15,6 +15,7 @@
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
     "@reduxjs/toolkit": "^2.2.3",
+    "antd": "^5.16.2",
     "ethers": "^6.11.1",
     "framer-motion": "^11.0.24",
     "next": "14.1.4",
