@@ -32,7 +32,7 @@ const items1: MenuProps["items"] = ["Home", "investment"].map((key) => ({
 const HeaderComponent: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { wallet } = useAppSelector((state) => state.account);
+  const { wallet } = useAppSelector((state: any) => state.account);
   const [currentAccount, setCurrentAccount] = useState("");
   const [isReload, setIsReload] = useState(false);
 
