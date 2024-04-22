@@ -1,19 +1,33 @@
 "use client";
 
-declare var window: any;
-
-import React, { useEffect } from "react";
-import { HeaderComponent, WalletConnect, WalletInfo } from "@/components";
-import MarketContract from "../../../contracts/MarketContract";
+import React from "react";
+import { Col } from "antd";
+import { FormInput } from "@/components";
 
 export default function InvestView() {
-  const marketContract = new MarketContract();
-  useEffect(() => {
-    const getFeePercent = async () => {
-      const data = await marketContract.getPriceItem(1);
-    };
-    getFeePercent();
-  }, []);
-
-  return <div>{/* <HeaderComponent /> */}</div>;
+  return (
+    <Col span={24} style={style.container}>
+      <Col style={style.col_input} span={18}>
+        <FormInput />
+      </Col>
+    </Col>
+  );
 }
+
+const style = {
+  container: {
+    background: "#21E09D",
+    padding: "10px 0",
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+  },
+  col_input: {
+    background: "white",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    alignSelf: "center",
+  },
+};

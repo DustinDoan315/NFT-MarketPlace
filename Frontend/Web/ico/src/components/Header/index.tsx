@@ -33,17 +33,35 @@ const HeaderComponent: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { wallet } = useAppSelector((state) => state.account);
-  const [feePercent, setFeePercent] = useState<number>(0);
-  useEffect(() => {}, []);
+  const [currentAccount, setCurrentAccount] = useState("");
+
+  const checkIfAccountChanged = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum, undefined);
+    try {
+      const { ethereum } = window;
+      ethereum.on("accountsChanged", (accounts: any) => {
+        console.log("Account changed to:", accounts[0]);
+        setCurrentAccount(accounts[0]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    checkIfAccountChanged();
+  }, []);
 
   const connectWallet = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum, undefined);
     if (window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum, undefined);
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
-
+      console.log("====================================");
+      console.log(address);
+      console.log("====================================");
       dispatch(
         setWalletInfo({
           address,
@@ -63,7 +81,7 @@ const HeaderComponent: React.FC = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["2"]}
+          defaultSelectedKeys={["Home"]}
           items={items1}
           style={{ flex: 1, minWidth: 0 }}
         />
