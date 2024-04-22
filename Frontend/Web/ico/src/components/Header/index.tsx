@@ -34,23 +34,37 @@ const HeaderComponent: React.FC = () => {
 
   const { wallet } = useAppSelector((state) => state.account);
   const [currentAccount, setCurrentAccount] = useState("");
-
-  const checkIfAccountChanged = async () => {
-    const provider = new ethers.BrowserProvider(window.ethereum, undefined);
-    try {
-      const { ethereum } = window;
-      ethereum.on("accountsChanged", (accounts: any) => {
-        console.log("Account changed to:", accounts[0]);
-        setCurrentAccount(accounts[0]);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [isReload, setIsReload] = useState(false);
 
   useEffect(() => {
-    checkIfAccountChanged();
-  }, []);
+    const handleAccountsChanged = (accounts: string[]) => {
+      console.log("New account:", accounts);
+    };
+
+    let cleanup: any;
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      console.log("OKKKK", window.ethereum.networkVersion);
+
+      cleanup = () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    }
+
+    const timeoutId = setTimeout(() => {
+      setIsReload(!isReload);
+    }, 5000);
+
+    return () => {
+      if (cleanup) {
+        cleanup();
+      }
+      clearTimeout(timeoutId);
+    };
+  }, [isReload]);
 
   const connectWallet = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum, undefined);
@@ -59,9 +73,7 @@ const HeaderComponent: React.FC = () => {
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
-      console.log("====================================");
-      console.log(address);
-      console.log("====================================");
+
       dispatch(
         setWalletInfo({
           address,
