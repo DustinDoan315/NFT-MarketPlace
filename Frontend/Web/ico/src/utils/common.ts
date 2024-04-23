@@ -1,6 +1,7 @@
 export enum CHAIN_ID {
   TESTNET = 97,
   MAINNET = 56,
+  SEPOLIA = 11155111,
 }
 
 export default function getChainIdFromEnv(): number {

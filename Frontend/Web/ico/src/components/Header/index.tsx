@@ -36,35 +36,35 @@ const HeaderComponent: React.FC = () => {
   const [isConnectWallet, setIsConnectWallet] = useState<boolean>(false);
   const [isReload, setIsReload] = useState<boolean>(false);
 
-  useEffect(() => {
-    const handleAccountsChanged = (accounts: string[]) => {
-      console.log("New account:", accounts);
-    };
+  // useEffect(() => {
+  //   const handleAccountsChanged = (accounts: string[]) => {
+  //     console.log("New account:", accounts);
+  //   };
 
-    let cleanup: any;
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
-      console.log("OKKKK", window.ethereum.networkVersion);
+  //   let cleanup: any;
+  //   if (window.ethereum) {
+  //     window.ethereum.on("accountsChanged", handleAccountsChanged);
+  //     console.log("OKKKK", window.ethereum.networkVersion);
 
-      cleanup = () => {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
-      };
-    }
+  //     cleanup = () => {
+  //       window.ethereum.removeListener(
+  //         "accountsChanged",
+  //         handleAccountsChanged
+  //       );
+  //     };
+  //   }
 
-    const timeoutId = setTimeout(() => {
-      setIsReload(!isReload);
-    }, 5000);
+  //   const timeoutId = setTimeout(() => {
+  //     setIsReload(!isReload);
+  //   }, 5000);
 
-    return () => {
-      if (cleanup) {
-        cleanup();
-      }
-      clearTimeout(timeoutId);
-    };
-  }, [isReload]);
+  //   return () => {
+  //     if (cleanup) {
+  //       cleanup();
+  //     }
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [isReload]);
 
   const connectWallet = async () => {
     setIsConnectWallet(true);

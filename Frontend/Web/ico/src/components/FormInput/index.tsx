@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Alert, Button, Form, Input, Spin } from "antd";
+import { Alert, Button, Form, Input, Modal, Spin } from "antd";
 import { nftContract } from "@/utils/Contract";
 import { useAppSelector } from "@/redux/hooks";
+import { CHAIN_ID } from "@/utils/common";
+
+declare var window: any;
 
 type EthereumAddress = `0x${string}`;
 type FormValueType = {
@@ -23,6 +26,39 @@ const FormInput: React.FC = () => {
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = async () => {
+    setIsModalOpen(false);
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [
+          {
+            chainId: "0xaa36a7",
+          },
+        ],
+      });
+      console.log("Switched to Sepolia chain successfully");
+    } catch (error) {
+      console.error("Error switching to Sepolia chain:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const checkChain = (value: any) => {
+    if (window.ethereum && window.ethereum.networkVersion == CHAIN_ID.SEPOLIA) {
+      onFinish(value);
+    } else {
+      showModal();
+    }
+  };
 
   const onFinish = async (values: any) => {
     setIsLoading(true);
@@ -85,7 +121,7 @@ const FormInput: React.FC = () => {
 
   return (
     <Form
-      onFinish={onFinish}
+      onFinish={checkChain}
       name="wrap"
       labelCol={{ flex: "110px" }}
       labelAlign="left"
@@ -94,7 +130,15 @@ const FormInput: React.FC = () => {
       colon={false}
       style={{ maxWidth: 600 }}>
       {isShowAlert && (
-        <Alert message={alertMessage} type={alertType ? "success" : "error"} />
+        <div
+          style={{
+            padding: "0px  0px 10px 0px",
+          }}>
+          <Alert
+            message={alertMessage}
+            type={alertType ? "success" : "error"}
+          />
+        </div>
       )}
       <Form.Item
         label="Address"
@@ -110,12 +154,22 @@ const FormInput: React.FC = () => {
       <Form.Item label=" ">
         {!isLoading ? (
           <Button type="primary" htmlType="submit">
-            Submit
+            Mint
           </Button>
         ) : (
           <Spin size="large" />
         )}
       </Form.Item>
+
+      <Modal
+        title="Network chain is not matching"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}>
+        <p style={{ color: "red", fontSize: "14px" }}>
+          Please switch to the Sepolia chain
+        </p>
+      </Modal>
     </Form>
   );
 };

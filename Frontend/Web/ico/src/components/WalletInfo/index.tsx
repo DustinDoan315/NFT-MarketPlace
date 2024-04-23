@@ -18,33 +18,53 @@ interface IProps {
 export default function WalletInfo({ address, amount }: IProps) {
   const dispatch = useAppDispatch();
 
-  const handleSwitchAccount = async () => {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    await provider.send("wallet_requestPermissions", [
-      {
-        eth_accounts: {},
-      },
-    ]);
-    const accounts = await provider.send("eth_requestAccounts", []);
-    const address = accounts[0];
-    const balance = await provider.getBalance(address);
+  let permissionRequestPending = false;
 
-    dispatch(
-      setWalletInfo({
-        address,
-        eth: Number.parseFloat(ethers.formatEther(balance)),
-      })
-    );
+  const handleSwitchAccount = async () => {
+    try {
+      if (permissionRequestPending) {
+        console.log("Permission request already pending. Please wait.");
+        return;
+      }
+
+      permissionRequestPending = true;
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      await provider.send("wallet_requestPermissions", [{ eth_accounts: {} }]);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      const address = accounts[0];
+      const balance = await provider.getBalance(address);
+
+      dispatch(
+        setWalletInfo({
+          address,
+          eth: Number.parseFloat(ethers.formatEther(balance)),
+        })
+      );
+    } catch (error: any) {
+      console.error("Error handling switch account:", error);
+      if (error.code === 4001) {
+        console.log("User rejected the request. Please try again.");
+      }
+    } finally {
+      permissionRequestPending = false;
+    }
   };
 
   return (
     <Flex justify="center" align="center" gap="small">
       <span style={{ color: "white" }}>{showSortAddress(address)}</span>
-      <Image src={"/eth.webp"} width={25} />
+      <Image preview={false} src={"/eth.webp"} width={25} />
       <span style={{ color: "white" }}>{numberFormat(amount)}</span>
 
       <Button onClick={handleSwitchAccount} type="default">
-        Switch Account
+        <Image
+          preview={false}
+          onClick={handleSwitchAccount}
+          src={"/switchWallet.webp"}
+          width={20}
+        />
       </Button>
     </Flex>
   );
