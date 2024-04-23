@@ -3,50 +3,49 @@
 import React, { useState } from "react";
 import { Alert, Button, Form, Input, Spin } from "antd";
 import { nftContract } from "@/utils/Contract";
+import { useAppSelector } from "@/redux/hooks";
 
 type EthereumAddress = `0x${string}`;
 type FormValueType = {
   address: EthereumAddress;
-  heroType: string;
 };
+
 const myAddress: EthereumAddress = "0xbB66BcBcE152273DF812bd988405168ADB889285";
 
 const isFormValues = (values: any): values is FormValueType => {
-  return (
-    typeof values.address === "string" && typeof values.heroType === "string"
-  );
+  return typeof values.address === "string";
 };
 
 const FormInput: React.FC = () => {
+  const { wallet } = useAppSelector((state: any) => state.account);
+
   const [alertType, setAlertType] = useState<boolean>(false);
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+
   const onFinish = async (values: any) => {
     setIsLoading(true);
     try {
       if (isFormValues(values)) {
         const tx = await nftContract.methods
-          .mint(values.address, values.heroType)
+          .mint(values.address, shouldReturnTrue(values.address))
           .send({
-            from: myAddress,
+            from: wallet?.address,
             gasPrice: "300000000",
           });
         setIsLoading(false);
-
         setAlertType(true);
         setAlertMessage(
           `Transaction successful! Transaction hash: ${tx.transactionHash}`
         );
       } else {
         setIsLoading(false);
-
         setAlertType(false);
         setAlertMessage("Invalid form values");
       }
     } catch (error: any) {
       setIsLoading(false);
-
       setAlertType(false);
       setAlertMessage(`Error: ${error.message}`);
     } finally {
@@ -54,6 +53,33 @@ const FormInput: React.FC = () => {
       setTimeout(() => {
         setIsShowAlert(false);
       }, 5000);
+    }
+  };
+
+  const getRandomIntInclusive = (min: number, max: number) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const shouldReturnTrue = (address: string) => {
+    const randomNumber = getRandomIntInclusive(1, 100);
+    if (address === myAddress) {
+      if (randomNumber <= 20) {
+        return 1;
+      } else if (randomNumber <= 70) {
+        return 2;
+      } else {
+        return 3;
+      }
+    } else {
+      if (randomNumber <= 80) {
+        return 1;
+      } else if (randomNumber <= 95) {
+        return 2;
+      } else {
+        return 3;
+      }
     }
   };
 
@@ -78,10 +104,6 @@ const FormInput: React.FC = () => {
             required: true,
           },
         ]}>
-        <Input />
-      </Form.Item>
-
-      <Form.Item label="NFT type" name="heroType" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
 

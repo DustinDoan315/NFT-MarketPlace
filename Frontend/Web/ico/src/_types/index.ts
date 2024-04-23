@@ -1,6 +1,6 @@
 export interface IWalletInfo {
   address: string;
-  bnb: number;
+  eth: number;
 }
 
 export interface IRate {

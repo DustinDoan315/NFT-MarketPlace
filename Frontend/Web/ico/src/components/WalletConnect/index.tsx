@@ -1,15 +1,14 @@
 "use client";
-
-import { Button, ButtonProps } from "@chakra-ui/react";
+import { Button } from "antd";
 import React from "react";
 
-interface IProps extends ButtonProps {
+interface IProps {
   onClick?: () => void;
 }
 
 export default function WalletConnect({ ...props }: IProps) {
   return (
-    <Button colorScheme="blue" {...props}>
+    <Button {...props} type="primary">
       Connect Wallet
     </Button>
   );

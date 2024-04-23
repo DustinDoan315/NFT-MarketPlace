@@ -26,8 +26,7 @@ const style = {
     background: "white",
     color: "white",
     border: "none",
-    padding: "10px 20px",
+    padding: "25px 20px 0px 20px",
     borderRadius: "5px",
-    alignSelf: "center",
   },
 };
