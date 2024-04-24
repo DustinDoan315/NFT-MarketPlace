@@ -1,16 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 
 contract Marketplace is ReentrancyGuard {
 
+    struct ListDetail {
+        address payable author;
+        uint256 price;
+        uint256 tokenId;
+    }
+
     address payable public immutable feeAccount;
     uint public immutable feePercent;
     uint public itemCount;
+    mapping(uint256 => ListDetail) listDetail;
+
 
     struct Item {
         uint itemId;
@@ -48,6 +58,18 @@ contract Marketplace is ReentrancyGuard {
         require(_price > 0, "Price must be greater than zero");
         _;
     }
+
+    // function getListedNft() view public returns (ListDetail [] memory)  {
+        
+    //     uint balance = nft.balanceOf(address(this));
+    //     ListDetail[] memory myNft = new ListDetail[](balance);
+       
+    //     for( uint i = 0; i < balance; i++)
+    //     {
+    //         myNft[i] = listDetail[nft.tokenOfOwnerByIndex(address(this), i)];
+    //     }
+    //     return myNft;
+    // }
 
     function getTotalPrice(uint _itemId) view public returns(uint){
         return ((items[_itemId].price*(100+feePercent))/100);

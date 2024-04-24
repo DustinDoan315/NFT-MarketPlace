@@ -1,6 +1,6 @@
 import { artifacts, ethers } from "hardhat";
 
-const tokenName: string = "DTC";
+const tokenName: string = "DTCV3";
 const marketName: string = "Marketplace";
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "../../.env" });
@@ -11,15 +11,18 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
 
   // Get the ContractFactories and Signers here.
+  const Token = await ethers.getContractFactory(tokenName);
   const NFT = await ethers.getContractFactory(tokenName);
   const Marketplace = await ethers.getContractFactory(marketName);
   // deploy contracts
-  const nft = await NFT.deploy("0xbB66BcBcE152273DF812bd988405168ADB889285");
+  const token = await Token.deploy(
+    "0xbB66BcBcE152273DF812bd988405168ADB889285"
+  );
   // const marketplace = await Marketplace.deploy(10);
   // Save copies of each contracts abi and address to the frontend.
   // saveFrontendFiles(marketplace, marketName);
-  saveFrontendFiles(nft, tokenName);
-  console.log("Contract address:", nft);
+  saveFrontendFiles(token, tokenName);
+  console.log("Contract address:", token);
 }
 
 function saveFrontendFiles(contract: any, name: string) {
