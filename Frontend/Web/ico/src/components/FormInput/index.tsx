@@ -5,6 +5,7 @@ import { Alert, Button, Form, Input, Modal, Spin } from "antd";
 import { nftContract } from "@/utils/Contract";
 import { useAppSelector } from "@/redux/hooks";
 import { CHAIN_ID } from "@/utils/common";
+import { mintNft } from "@/utils/helper";
 
 declare var window: any;
 
@@ -12,8 +13,6 @@ type EthereumAddress = `0x${string}`;
 type FormValueType = {
   address: EthereumAddress;
 };
-
-const myAddress: EthereumAddress = "0xbB66BcBcE152273DF812bd988405168ADB889285";
 
 const isFormValues = (values: any): values is FormValueType => {
   return typeof values.address === "string";
@@ -53,6 +52,7 @@ const FormInput: React.FC = () => {
     setIsModalOpen(false);
   };
   const checkChain = (value: any) => {
+    // getOwnedNFTs();
     if (window.ethereum && window.ethereum.networkVersion == CHAIN_ID.SEPOLIA) {
       onFinish(value);
     } else {
@@ -64,12 +64,7 @@ const FormInput: React.FC = () => {
     setIsLoading(true);
     try {
       if (isFormValues(values)) {
-        const tx = await nftContract.methods
-          .mint(values.address, shouldReturnTrue(values.address))
-          .send({
-            from: wallet?.address,
-            gasPrice: "300000000",
-          });
+        const tx = await mintNft(values.address, wallet.address);
         setIsLoading(false);
         setAlertType(true);
         setAlertMessage(
@@ -92,32 +87,26 @@ const FormInput: React.FC = () => {
     }
   };
 
-  const getRandomIntInclusive = (min: number, max: number) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  async function getOwnedNFTs(ownerAddress?: string) {
+    let tokenId = 1;
+    const ownedTokenIDs = [];
 
-  const shouldReturnTrue = (address: string) => {
-    const randomNumber = getRandomIntInclusive(1, 100);
-    if (address === myAddress) {
-      if (randomNumber <= 20) {
-        return 1;
-      } else if (randomNumber <= 70) {
-        return 2;
-      } else {
-        return 3;
+    try {
+      while (tokenId < 10) {
+        const tokenOwner = await nftContract.methods.ownerOf(21).call();
+        if (tokenOwner === ownerAddress) {
+          ownedTokenIDs.push(tokenId);
+        }
+        tokenId++;
       }
-    } else {
-      if (randomNumber <= 80) {
-        return 1;
-      } else if (randomNumber <= 95) {
-        return 2;
-      } else {
-        return 3;
+    } catch (error: any) {
+      if (error.code !== "CALL_EXCEPTION") {
+        throw error;
       }
     }
-  };
+
+    return ownedTokenIDs;
+  }
 
   return (
     <Form

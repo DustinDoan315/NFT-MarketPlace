@@ -2,8 +2,8 @@ import Web3 from "web3";
 import marketplace from "../../ContractsData/Marketplace.json";
 import marketplaceAddr from "../../ContractsData/Marketplace-address.json";
 
-import nft from "../../ContractsData/DTC.json";
-import nftAddress from "../../ContractsData/DTC-address.json";
+import nft from "../../ContractsData/NFT.json";
+import nftAddress from "../../ContractsData/NFT-address.json";
 
 const network = "sepolia";
 
