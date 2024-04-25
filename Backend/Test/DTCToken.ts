@@ -1,10 +1,10 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 import { describe } from "mocha";
-import { DTCV3, DTC__factory } from "../typechain-types";
+import { DTCV3, DTCV3__factory } from "../typechain-types";
 
 describe("---DTC---", () => {
-  let DTCV3: DTC__factory;
+  let DTCV3: DTCV3__factory;
   let dtc: any;
   let Marketplace: any;
   let marketplace: any;
