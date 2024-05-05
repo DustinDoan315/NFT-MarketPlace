@@ -38,8 +38,14 @@ export const mintNft = async (senderAddress: string, walletAddress: string) => {
     });
 };
 
-export const setApprovalFroWallet = async (
-  senderAddress: string,
-  walletAddress: string,
-  tokenId: string
-) => {};
+export const getTokenByAddress = async (
+  senderAddress: string
+): Promise<number[]> => {
+  const tokenIdsBigInt: BigInt[] = await nftContract.methods
+    .listTokenIds(senderAddress)
+    .call();
+  const tokenIds: number[] = tokenIdsBigInt.map((tokenId) =>
+    Number(tokenId.toString())
+  );
+  return tokenIds;
+};
