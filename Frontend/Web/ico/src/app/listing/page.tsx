@@ -6,13 +6,17 @@ import React, { useEffect, useState } from "react";
 import { Image, Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { DataListingType } from "@/constants/types";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setListNft } from "@/redux/reducers/accounts/account.slice";
 export default function InvestmentLayout() {
+  const dispatch = useAppDispatch();
   const myAddress: string = "0xbB66BcBcE152273DF812bd988405168ADB889285";
-  const [listToken, setListToken] = useState<number[]>([]);
+  const { listNft } = useAppSelector((state: any) => state.account);
+
   useEffect(() => {
     const getListingByAddress = async () => {
       const data: number[] = await getTokenByAddress(myAddress);
-      setListToken(data);
+      dispatch(setListNft(data));
     };
     getListingByAddress();
   }, []);
@@ -30,7 +34,7 @@ export default function InvestmentLayout() {
     },
   ];
 
-  const data: DataListingType[] = listToken?.map((token: number) => {
+  const data: DataListingType[] = listNft?.map((token: number) => {
     return {
       key: token,
       tokenId: token.toString(),

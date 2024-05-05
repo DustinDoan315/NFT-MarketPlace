@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 
 export interface AccountState {
   wallet?: IWalletInfo;
+  listNft?: number[];
   web3Provider?: ethers.BrowserProvider;
 }
 
@@ -22,8 +23,12 @@ export const accountSlice = createSlice({
     setWalletInfo: (state, actions: PayloadAction<IWalletInfo>) => {
       state.wallet = actions.payload;
     },
+    setListNft: (state, actions: PayloadAction<number[]>) => {
+      state.listNft = actions.payload;
+    },
   },
 });
 
-export const { setWeb3Provider, setWalletInfo } = accountSlice.actions;
+export const { setWeb3Provider, setWalletInfo, setListNft } =
+  accountSlice.actions;
 export default accountSlice.reducer;
