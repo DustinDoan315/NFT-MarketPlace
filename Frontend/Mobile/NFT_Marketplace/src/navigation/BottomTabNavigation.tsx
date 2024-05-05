@@ -8,11 +8,11 @@ import router from './router';
 import {bottom} from '@screens/bottom';
 const Tab = createBottomTabNavigator();
 
-type TabRoute = {
-  title: string;
-  icon: any;
-  component: React.ComponentType<any>;
-};
+// type TabRoute = {
+//   title: string;
+//   icon: any;
+//   component: React.ComponentType<any>;
+// };
 
 const TabButton: React.FC<
   | {
