@@ -1,71 +1,201 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-
-import '@walletconnect/react-native-compat';
-import {WagmiConfig} from 'wagmi';
-import {mainnet, polygon, arbitrum} from 'viem/chains';
+/* eslint-disable react-native/no-inline-styles */
 import {
-  createWeb3Modal,
-  defaultWagmiConfig,
-  W3mButton,
-  Web3Modal,
-} from '@web3modal/wagmi-react-native';
-import {commonRoot} from '@navigation/NavigationRef';
-import router from '@navigation/router';
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React from 'react';
+import {FakeListAssets} from '@utils/fake';
+import {width} from '@utils/response';
+import {formatPrice} from '@utils/helper';
+import {icons} from '@assets/index';
 
-// 1. Get projectId at https://cloud.walletconnect.com
-const projectId = 'a21f4935aa965b70bd440d5ea8be7fae';
+export const ListAssets = () => {
+  const _renderItem = ({item}: any) => {
+    return (
+      <View style={styles.assetItem} key={item?.id.toString()}>
+        <Image
+          style={styles.assetItemImage}
+          source={item?.img}
+          resizeMode="stretch"
+        />
+        <View style={styles.tokenName}>
+          <Text style={{marginBottom: 3}}>{item?.name}</Text>
+          <Text>{item?.token}</Text>
+        </View>
 
-// 2. Create config
-const metadata = {
-  name: 'Web3Modal RN',
-  description: 'Web3Modal RN Example',
-  url: 'https://web3modal.com',
-  icons: ['https://avatars.githubusercontent.com/u/37784886'],
-  redirect: {
-    native: 'YOUR_APP_SCHEME://',
-    universal: 'YOUR_APP_UNIVERSAL_LINK.com',
-  },
-};
-
-const chains = [mainnet, polygon, arbitrum];
-
-const wagmiConfig = defaultWagmiConfig({chains, projectId, metadata});
-
-createWeb3Modal({
-  projectId,
-  chains,
-  wagmiConfig,
-  enableAnalytics: true,
-  includeWalletIds: [
-    '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0', // Trust
-    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // Metamask
-    '8a0ee50d1f22f6651afcae7eb4253e52a3310b90af5daef78a8c4929a9bb99d4', // Binance
-  ],
-});
-
-const HomeViewModal = () => {
-  const handleNavigate = () => {
-    commonRoot.navigate(router.DETAIL_SCREEN);
+        <View style={styles.tokenPrice}>
+          <Text style={{marginBottom: 3}}>{formatPrice(item?.price)}</Text>
+          <Text
+            style={[
+              {
+                color: item?.profit > 0 ? 'green' : 'red',
+              },
+            ]}>
+            {`${item?.profit > 0 ? '+' + item?.profit : item?.profit}`}%
+          </Text>
+        </View>
+      </View>
+    );
   };
 
   return (
-    <View style={styles.container}>
-      <Web3Modal />
-      <Text>HomeViewModal</Text>
-
-      <W3mButton />
+    <View style={styles.listAssetContainer}>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          marginBottom: 7,
+        }}>
+        {'Assets'}
+      </Text>
+      <FlatList data={FakeListAssets} renderItem={_renderItem} />
     </View>
   );
 };
 
-export default HomeViewModal;
+export const MyWallet = () => {
+  return (
+    <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Text style={{marginRight: 5, color: 'gray'}}>My Wallet</Text>
+        <View
+          style={{
+            paddingVertical: 3,
+            paddingHorizontal: 10,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#F4F5F8',
+          }}>
+          <Text
+            style={{
+              color: 'gray',
+            }}>
+            0xbB...285
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', marginVertical: 5}}>
+          {formatPrice(54292.79)}
+        </Text>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+        <View
+          style={{
+            paddingVertical: 5,
+            paddingHorizontal: 7,
+            borderRadius: 100,
+            backgroundColor: 'green',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 12, color: 'white', fontWeight: '500'}}>
+            {'+5.21'}%
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexDirection: 'row',
+          marginVertical: 7,
+        }}>
+        <TouchableOpacity
+          style={{
+            width: '46%',
+            paddingVertical: 10,
+            paddingHorizontal: 7,
+            borderRadius: 100,
+            backgroundColor: 'black',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+            marginRight: 15,
+          }}>
+          <Image
+            style={{
+              width: 24,
+              height: 24,
+              marginRight: 5,
+            }}
+            resizeMode="cover"
+            source={icons.send}
+          />
+          <Text style={{fontSize: 14, color: 'white', fontWeight: 'bold'}}>
+            Send
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '46%',
+            paddingVertical: 10,
+            paddingHorizontal: 7,
+            borderRadius: 100,
+            backgroundColor: 'black',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <Image
+            style={{
+              width: 24,
+              height: 24,
+              marginRight: 5,
+            }}
+            resizeMode="cover"
+            source={icons.qr_code}
+          />
+          <Text style={{fontSize: 14, color: 'white', fontWeight: 'bold'}}>
+            Receive
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export const styles = StyleSheet.create({
+  listAssetContainer: {
+    width: '100%',
+    paddingVertical: 10,
+  },
+  assetItem: {
+    width: width,
+    flexDirection: 'row',
+    height: 50,
     alignItems: 'center',
-    backgroundColor: 'pink',
+    marginVertical: 5,
+  },
+  assetItemImage: {
+    width: 48,
+    height: '100%',
+    marginTop: 7,
+  },
+  tokenName: {
+    marginHorizontal: 10,
+    height: '100%',
+    justifyContent: 'center',
+  },
+  tokenPrice: {
+    position: 'absolute',
+    right: 32,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 });

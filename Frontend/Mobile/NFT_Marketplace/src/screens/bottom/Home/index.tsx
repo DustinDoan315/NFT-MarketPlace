@@ -1,40 +1,20 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View} from 'react-native';
 import React from 'react';
 
-import {commonRoot} from '@navigation/NavigationRef';
-import router from '@navigation/router';
+import {styles} from './style';
+import {ListAssets, MyWallet} from './HomeViewModal';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
-  const handleNavigate = () => {
-    commonRoot.navigate(router.DETAIL_SCREEN);
-  };
-
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.button} onPress={handleNavigate}>
-        <Text style={{color: 'white', fontWeight: '700'}}>
-          Go to Detail screen
-        </Text>
-      </Pressable>
-    </View>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={styles.container}>
+        {MyWallet()}
+        {ListAssets()}
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'pink',
-  },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
