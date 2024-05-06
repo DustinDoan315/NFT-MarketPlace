@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import {
   FlatList,
@@ -23,12 +24,14 @@ export const ListAssets = () => {
           resizeMode="stretch"
         />
         <View style={styles.tokenName}>
-          <Text style={{marginBottom: 3}}>{item?.name}</Text>
+          <Text style={{marginBottom: 3, color: 'black'}}>{item?.name}</Text>
           <Text>{item?.token}</Text>
         </View>
 
         <View style={styles.tokenPrice}>
-          <Text style={{marginBottom: 3}}>{formatPrice(item?.price)}</Text>
+          <Text style={{marginBottom: 3, color: 'black'}}>
+            {formatPrice(item?.price)}
+          </Text>
           <Text
             style={[
               {
@@ -49,6 +52,7 @@ export const ListAssets = () => {
           fontSize: 20,
           fontWeight: 'bold',
           marginBottom: 7,
+          color: 'black',
         }}>
         {'Assets'}
       </Text>
@@ -63,7 +67,10 @@ export const ListAssets = () => {
 
 export const MyWallet = () => {
   return (
-    <View>
+    <View
+      style={{
+        paddingVertical: 10,
+      }}>
       <View
         style={{
           flexDirection: 'row',
@@ -93,7 +100,13 @@ export const MyWallet = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Text style={{fontSize: 24, fontWeight: 'bold', marginVertical: 5}}>
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: 'bold',
+            marginVertical: 5,
+            color: 'black',
+          }}>
           {formatPrice(54292.79)}
         </Text>
 

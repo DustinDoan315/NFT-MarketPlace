@@ -1,9 +1,10 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import router from './router';
@@ -61,10 +62,12 @@ const BottomContainer = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          left: 0,
+          // position: 'absolute',
+          // bottom: 0,
+          // right: 0,
+          // left: 0,
+          height: 75,
+          paddingBottom: Platform.OS === 'android' ? 20 : 0,
         },
       }}>
       <Tab.Screen
