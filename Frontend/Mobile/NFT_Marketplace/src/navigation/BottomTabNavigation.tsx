@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
@@ -29,7 +31,13 @@ const TabButton: React.FC<
       onPress={onPress}
       style={styles.container}>
       <Icon
-        name={name === 'Home' ? 'home-analytics' : 'account-details'}
+        name={
+          name === 'Home'
+            ? 'home-analytics'
+            : name === 'Wallet'
+            ? 'wallet'
+            : 'account-details'
+        }
         color={focused ? 'crimson' : 'black'}
         size={30}
       />
@@ -75,6 +83,16 @@ const BottomContainer = () => {
         options={{
           tabBarShowLabel: false,
           tabBarButton: props => <TabButton {...props} name={'Profile'} />,
+          headerLeft: NullComponent,
+        }}
+      />
+
+      <Tab.Screen
+        name={router.WALLET_SCREEN}
+        component={bottom[router.WALLET_SCREEN]}
+        options={{
+          tabBarShowLabel: false,
+          tabBarButton: props => <TabButton {...props} name={'Wallet'} />,
           headerLeft: NullComponent,
         }}
       />

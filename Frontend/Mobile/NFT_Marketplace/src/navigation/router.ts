@@ -7,6 +7,7 @@ export default {
   //bottom container
   HOME_SCREEN: 'HOME_SCREEN',
   PROFILE_SCREEN: 'PROFILE_SCREEN',
+  WALLET_SCREEN: 'WALLET_SCREEN',
 
   //common container
   DETAIL_SCREEN: 'DETAIL_SCREEN',

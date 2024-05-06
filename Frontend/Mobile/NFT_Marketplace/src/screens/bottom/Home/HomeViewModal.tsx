@@ -52,7 +52,11 @@ export const ListAssets = () => {
         }}>
         {'Assets'}
       </Text>
-      <FlatList data={FakeListAssets} renderItem={_renderItem} />
+      <FlatList
+        scrollEnabled={false}
+        data={FakeListAssets}
+        renderItem={_renderItem}
+      />
     </View>
   );
 };
