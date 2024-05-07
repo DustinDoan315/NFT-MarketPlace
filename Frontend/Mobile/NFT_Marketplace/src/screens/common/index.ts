@@ -1,6 +1,6 @@
 import router from '@navigation/router';
-import DetailScreen from './ConnectSmartContract';
+import ChartScreen from './ChartScreen';
 
 export const common = {
-  [router.DETAIL_SCREEN]: DetailScreen,
+  [router.CHART_SCREEN]: ChartScreen,
 };

@@ -3,6 +3,7 @@
 import {
   FlatList,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,11 +14,20 @@ import {FakeListAssets} from '@utils/fake';
 import {width} from '@utils/response';
 import {formatPrice} from '@utils/helper';
 import {icons} from '@assets/index';
+import {commonRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
 export const ListAssets = () => {
   const _renderItem = ({item}: any) => {
+    const navigateChart = (token: any) => {
+      console.log(token.name);
+      commonRoot.navigate(router.CHART_SCREEN, {token: token});
+    };
     return (
-      <View style={styles.assetItem} key={item?.id.toString()}>
+      <Pressable
+        onPress={() => navigateChart(item)}
+        style={styles.assetItem}
+        key={item?.id.toString()}>
         <Image
           style={styles.assetItemImage}
           source={item?.img}
@@ -41,7 +51,7 @@ export const ListAssets = () => {
             {`${item?.profit > 0 ? '+' + item?.profit : item?.profit}`}%
           </Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 

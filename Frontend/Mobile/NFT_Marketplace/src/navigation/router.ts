@@ -11,4 +11,5 @@ export default {
 
   //common container
   DETAIL_SCREEN: 'DETAIL_SCREEN',
+  CHART_SCREEN: 'CHART_SCREEN',
 };

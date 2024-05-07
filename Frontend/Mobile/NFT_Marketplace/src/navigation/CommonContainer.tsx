@@ -9,8 +9,8 @@ const CommonContainer = () => {
   return (
     <CommonStack.Navigator screenOptions={{headerShown: false}}>
       <CommonStack.Screen
-        name={router.DETAIL_SCREEN}
-        component={common[router.DETAIL_SCREEN]}
+        name={router.CHART_SCREEN}
+        component={common[router.CHART_SCREEN]}
       />
     </CommonStack.Navigator>
   );
