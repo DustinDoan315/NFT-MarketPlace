@@ -1,10 +1,10 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {root} from '@navigation/NavigationRef';
 import {CandlestickChart, LineChart} from 'react-native-wagmi-charts';
 import axios from 'axios';
-
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ChartScreen = ({route}: any) => {
@@ -13,7 +13,6 @@ const ChartScreen = ({route}: any) => {
   const [visibleData, setVisibleData] = useState(coinPrice.slice(0, 10));
   const [number, setNumber] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
-  // { currentX, currentY, data, domain, step } = CandlestickChart.useChart();
   const [visibleItems, setVisibleItems] = React.useState<number[]>([]);
 
   useEffect(() => {
@@ -23,17 +22,17 @@ const ChartScreen = ({route}: any) => {
     setVisibleData(coinPrice.slice(0, 10));
   }, [coinPrice]);
 
-  const loadMoreData = () => {
-    if (!isLoading) {
-      setIsLoading(true);
-      setTimeout(() => {
-        const nextItems = coinPrice.slice(number, number + 2);
-        setNumber(number + 2);
-        setVisibleData((prevData: any) => [...prevData.slice(2), ...nextItems]);
-        setIsLoading(false);
-      }, 500);
-    }
-  };
+  // const loadMoreData = () => {
+  //   if (!isLoading) {
+  //     setIsLoading(true);
+  //     setTimeout(() => {
+  //       const nextItems = coinPrice.slice(number, number + 2);
+  //       setNumber(number + 2);
+  //       setVisibleData((prevData: any) => [...prevData.slice(2), ...nextItems]);
+  //       setIsLoading(false);
+  //     }, 500);
+  //   }
+  // };
   const ITEM_WIDTH = 20;
 
   const handleScroll = (event: any) => {
@@ -49,10 +48,6 @@ const ChartScreen = ({route}: any) => {
 
     setVisibleItems(visibleIndexes);
   };
-
-  console.log('====================================');
-  console.log('visibleItems', visibleItems);
-  console.log('====================================');
 
   const fetchBTCPrice = async () => {
     try {
@@ -98,6 +93,7 @@ const ChartScreen = ({route}: any) => {
         <Pressable onPress={goBack}>
           <Text>Go back</Text>
         </Pressable>
+
         <Pressable
           style={{
             paddingHorizontal: 10,
@@ -135,7 +131,12 @@ const ChartScreen = ({route}: any) => {
               </LineChart>
             </LineChart.Provider>
           ) : (
-            <CandlestickChart.Provider data={coinPrice}>
+            <CandlestickChart.Provider
+              data={coinPrice}
+              dataDomain={coinPrice.slice(
+                visibleItems?.[0],
+                visibleItems?.[visibleItems.length - 1],
+              )}>
               <CandlestickChart width={coinPrice.length * 20}>
                 <CandlestickChart.Candles />
 
