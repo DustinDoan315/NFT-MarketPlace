@@ -10,6 +10,7 @@ import {width} from '@utils/response';
 import {CandlestickChart, LineChart} from '../WagmiCharts/src';
 
 const ITEM_WIDTH = 20;
+const HIGHTEST_BTC_PRICE = 68000;
 
 const ChartScreen = ({}: any) => {
   const [switchChartMode, setSwitchChartMode] = useState<string>('candle');
@@ -51,16 +52,16 @@ const ChartScreen = ({}: any) => {
           params: {
             symbol: 'BTCUSDT',
             interval: '1h',
-            limit: 100,
+            limit: 200,
           },
         },
       );
       const btcPrice = response.data;
       const formattedData = btcPrice.map((entry: any) => ({
         timestamp: Number(entry[0]),
-        open: parseFloat(entry[1]),
-        high: parseFloat(entry[2]),
-        low: parseFloat(entry[4]),
+        open: +entry[1],
+        high: +entry[2] > HIGHTEST_BTC_PRICE ? HIGHTEST_BTC_PRICE : +entry[2],
+        low: +entry[4],
         close: +entry[4] + 200,
         value: (+entry[1] + +entry[4]) / 2,
       }));
