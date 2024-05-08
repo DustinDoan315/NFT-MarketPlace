@@ -1,52 +1,46 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, StyleSheet, Pressable, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {root} from '@navigation/NavigationRef';
-import {CandlestickChart, LineChart} from 'react-native-wagmi-charts';
 import axios from 'axios';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {width} from '@utils/response';
+import {CandlestickChart, LineChart} from '../WagmiCharts/src';
 
-const ChartScreen = ({route}: any) => {
+const ITEM_WIDTH = 20;
+
+const ChartScreen = ({}: any) => {
   const [switchChartMode, setSwitchChartMode] = useState<string>('candle');
   const [coinPrice, setCoinPrice] = useState<any>([]);
-  const [visibleData, setVisibleData] = useState(coinPrice.slice(0, 10));
-  const [number, setNumber] = useState(10);
-  const [isLoading, setIsLoading] = useState(false);
-  const [visibleItems, setVisibleItems] = React.useState<number[]>([]);
-
+  const [visibleRange, setVisibleRange] = useState<[number, number]>([0, 20]);
+  const [visibleData, setVisibleData] = useState<any[]>([]);
   useEffect(() => {
     fetchBTCPrice();
   }, []);
-  useEffect(() => {
-    setVisibleData(coinPrice.slice(0, 10));
-  }, [coinPrice]);
 
-  // const loadMoreData = () => {
-  //   if (!isLoading) {
-  //     setIsLoading(true);
-  //     setTimeout(() => {
-  //       const nextItems = coinPrice.slice(number, number + 2);
-  //       setNumber(number + 2);
-  //       setVisibleData((prevData: any) => [...prevData.slice(2), ...nextItems]);
-  //       setIsLoading(false);
-  //     }, 500);
-  //   }
-  // };
-  const ITEM_WIDTH = 20;
+  useEffect(() => {
+    updateVisibleData();
+  }, [coinPrice, visibleRange]);
+
+  const updateVisibleData = useCallback(() => {
+    const [startIndex, endIndex] = visibleRange;
+    const newData = coinPrice.slice(startIndex, endIndex);
+    setVisibleData(newData);
+  }, [coinPrice, visibleRange]);
 
   const handleScroll = (event: any) => {
     const {contentOffset, layoutMeasurement} = event.nativeEvent;
-    const startIndex = Math.floor(contentOffset.x / ITEM_WIDTH);
+    const startIndex =
+      contentOffset.x > 0 ? Math.floor(contentOffset.x / ITEM_WIDTH) : 0;
     const endIndex = Math.ceil(
       (contentOffset.x + layoutMeasurement.width) / ITEM_WIDTH,
     );
-    const visibleIndexes = Array.from(
-      {length: endIndex - startIndex},
-      (_, i) => i + startIndex,
-    );
 
-    setVisibleItems(visibleIndexes);
+    if (startIndex !== visibleRange[0] || endIndex !== visibleRange[1]) {
+      setVisibleRange([startIndex, endIndex]);
+    }
   };
 
   const fetchBTCPrice = async () => {
@@ -67,11 +61,11 @@ const ChartScreen = ({route}: any) => {
         open: parseFloat(entry[1]),
         high: parseFloat(entry[2]),
         low: parseFloat(entry[4]),
-        close: parseFloat(entry[4]),
+        close: +entry[4] + 200,
         value: (+entry[1] + +entry[4]) / 2,
       }));
       setCoinPrice(formattedData);
-      console.log('BTC Price:', formattedData);
+
       return btcPrice;
     } catch (error: any) {
       console.error('Error fetching BTC price:', error.message);
@@ -111,9 +105,10 @@ const ChartScreen = ({route}: any) => {
 
         <ScrollView
           horizontal
+          onScroll={handleScroll}
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
-          onScroll={handleScroll}>
+          contentContainerStyle={{flexDirection: 'row'}}>
           {switchChartMode === 'line' ? (
             <LineChart.Provider data={coinPrice}>
               <LineChart>
@@ -133,22 +128,39 @@ const ChartScreen = ({route}: any) => {
           ) : (
             <CandlestickChart.Provider
               data={coinPrice}
-              dataDomain={coinPrice.slice(
-                visibleItems?.[0],
-                visibleItems?.[visibleItems.length - 1],
-              )}>
-              <CandlestickChart width={coinPrice.length * 20}>
+              dataDomain={visibleData || [0, 0]}>
+              <CandlestickChart
+                style={{
+                  backgroundColor: 'white',
+                  height: '75%',
+                }}
+                width={coinPrice.length * 20}>
                 <CandlestickChart.Candles />
-
-                {/* <CandlestickChart.Crosshair color={'green'}>
+                <CandlestickChart.Crosshair
+                  currentScreenWidth={
+                    visibleRange?.[visibleRange.length - 1] * ITEM_WIDTH
+                  }
+                  color={'black'}>
                   <CandlestickChart.Tooltip />
-                </CandlestickChart.Crosshair> */}
+                </CandlestickChart.Crosshair>
               </CandlestickChart>
-              {/* <CandlestickChart.PriceText type="open" />
-              <CandlestickChart.PriceText type="high" />
-              <CandlestickChart.PriceText type="low" />
-              <CandlestickChart.PriceText type="close" />
-              <CandlestickChart.DatetimeText /> */}
+
+              <View
+                style={{
+                  width: visibleRange?.[visibleRange.length - 1] * ITEM_WIDTH,
+                  position: 'absolute',
+                  bottom: 20,
+                  left:
+                    visibleRange?.[visibleRange.length - 1] * ITEM_WIDTH -
+                    width / 1.425,
+                  height: 100,
+                }}>
+                <CandlestickChart.PriceText type="open" />
+                <CandlestickChart.PriceText type="high" />
+                <CandlestickChart.PriceText type="low" />
+                <CandlestickChart.PriceText type="close" />
+                <CandlestickChart.DatetimeText />
+              </View>
             </CandlestickChart.Provider>
           )}
         </ScrollView>

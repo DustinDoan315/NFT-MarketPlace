@@ -20,7 +20,6 @@ import router from '@navigation/router';
 export const ListAssets = () => {
   const _renderItem = ({item}: any) => {
     const navigateChart = (token: any) => {
-      console.log(token.name);
       commonRoot.navigate(router.CHART_SCREEN, {token: token});
     };
     return (
