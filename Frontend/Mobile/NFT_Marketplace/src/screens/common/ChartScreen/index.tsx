@@ -111,10 +111,9 @@ const ChartScreen = ({}: any) => {
           contentContainerStyle={{flexDirection: 'row'}}>
           {switchChartMode === 'line' ? (
             <LineChart.Provider data={coinPrice}>
-              <LineChart>
+              <LineChart width={coinPrice.length * 20}>
                 <LineChart.Path color="red">
                   <LineChart.Gradient color={'red'} />
-                  <LineChart.Highlight color="green" from={1} to={2} />
                 </LineChart.Path>
                 <LineChart.CursorCrosshair>
                   <LineChart.Tooltip
