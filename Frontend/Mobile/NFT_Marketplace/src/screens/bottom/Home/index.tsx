@@ -3,15 +3,16 @@ import {ScrollView} from 'react-native';
 import React from 'react';
 
 import {styles} from './style';
-import {ListAssets, MyWallet} from './HomeViewModal';
+import {MyWallet} from './HomeViewModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {ListAccess} from './components';
 
 const HomeScreen = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView style={styles.container}>
         {MyWallet()}
-        {ListAssets()}
+        <ListAccess />
       </ScrollView>
     </SafeAreaView>
   );

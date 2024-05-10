@@ -1,78 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {FakeListAssets} from '@utils/fake';
 import {width} from '@utils/response';
 import {formatPrice} from '@utils/helper';
 import {icons} from '@assets/index';
-import {commonRoot} from '@navigation/NavigationRef';
-import router from '@navigation/router';
-
-export const ListAssets = () => {
-  const _renderItem = ({item}: any) => {
-    const navigateChart = (token: any) => {
-      commonRoot.navigate(router.CHART_SCREEN, {token: token});
-    };
-    return (
-      <Pressable
-        onPress={() => navigateChart(item)}
-        style={styles.assetItem}
-        key={item?.id.toString()}>
-        <Image
-          style={styles.assetItemImage}
-          source={item?.img}
-          resizeMode="stretch"
-        />
-        <View style={styles.tokenName}>
-          <Text style={{marginBottom: 3, color: 'black'}}>{item?.name}</Text>
-          <Text>{item?.token}</Text>
-        </View>
-
-        <View style={styles.tokenPrice}>
-          <Text style={{marginBottom: 3, color: 'black'}}>
-            {formatPrice(item?.price)}
-          </Text>
-          <Text
-            style={[
-              {
-                color: item?.profit > 0 ? 'green' : 'red',
-              },
-            ]}>
-            {`${item?.profit > 0 ? '+' + item?.profit : item?.profit}`}%
-          </Text>
-        </View>
-      </Pressable>
-    );
-  };
-
-  return (
-    <View style={styles.listAssetContainer}>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: 'bold',
-          marginBottom: 7,
-          color: 'black',
-        }}>
-        {'Assets'}
-      </Text>
-      <FlatList
-        scrollEnabled={false}
-        data={FakeListAssets}
-        renderItem={_renderItem}
-      />
-    </View>
-  );
-};
 
 export const MyWallet = () => {
   return (
